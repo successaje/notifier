@@ -4,9 +4,9 @@ const app = express();
 require("dotenv").config();
 app.use(express.json());
 
-// Configure Nodemailer (using SendGrid as an example)
+
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com", // Use "Gmail", "Outlook", or other services
+  host: "smtp.gmail.com", 
   port: 465,
   secure: true,
   auth: {
@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 });
 
 app.get("/", (req, res) => {
-    res.send("Hello, Heroku!");
+    res.send("Hello!");
 });
 
 // API endpoint to send emails
@@ -24,10 +24,10 @@ app.post("/send-email", async (req, res) => {
   const { to, subject, body } = req.body; //! Might add from aswell
 
   const mailOptions = {
-    from: '"Gamebloc" <successaje5@gmail.com>', // Sender email address
-    to,                            // Recipient email address
-    subject,                       // Email subject
-    text: body,                    // Email body (plain text)
+    from: '"Gamebloc" <contact@gamebloc.app>', 
+    to,                            
+    subject,                      
+    text: body,             
   };
 
   try {
