@@ -7,7 +7,7 @@ app.use(express.json());
 
 
 const CLASH_ROYALE_API_KEY = process.env.CLASH_ROYALE_API_KEY;
-const CLASHROYALE_BASE_URL = 'https://api.clashroyale.com/v1';
+const CLASHROYALE_BASE_URL = process.env.CLASHROYALE_BASE_URL;
 
 app.use((req, res, next) => {
   req.headers['Authorization'] = `Bearer ${CLASH_ROYALE_API_KEY}`;
@@ -18,7 +18,7 @@ async function makeApiRequest(url) {
   try {
       const response = await axios.get(url, {
           headers: {
-              Authorization: `Bearer ${API_KEY}`,
+              Authorization: `Bearer ${CLASH_ROYALE_API_KEY}`,
           },
       });
       return response.data;
@@ -33,7 +33,7 @@ app.get('/players/:playerTag', async (req, res) => {
   try {
       // Replace '#' with '%23' according to the documentation here: https://developer.clashroyale.com/#/documentation
       const playerTag = req.params.playerTag.replace('#', '%23'); 
-      const url = `${BASE_URL}/players/${playerTag}`;
+      const url = `https://api.clashroyale.com/v1/players/${playerTag}`;
       const playerInfo = await makeApiRequest(url);
       res.json(playerInfo);
   } catch (error) {
@@ -45,7 +45,7 @@ app.get('/players/:playerTag', async (req, res) => {
 app.get('/players/:playerTag/upcomingchests', async (req, res) => {
   try {
       const playerTag = req.params.playerTag.replace('#', '%23');
-      const url = `${BASE_URL}/players/${playerTag}/upcomingchests`;
+      const url = `https://api.clashroyale.com/v1/players/${playerTag}/upcomingchests`;
       const chestsInfo = await makeApiRequest(url);
       res.json(chestsInfo);
   } catch (error) {
@@ -57,7 +57,7 @@ app.get('/players/:playerTag/upcomingchests', async (req, res) => {
 app.get('/players/:playerTag/battlelog', async (req, res) => {
   try {
       const playerTag = req.params.playerTag.replace('#', '%23');
-      const url = `${BASE_URL}/players/${playerTag}/battlelog`;
+      const url = `https://api.clashroyale.com/v1/players/${playerTag}/battlelog`;
       const battleLog = await makeApiRequest(url);
       res.json(battleLog);
   } catch (error) {
@@ -69,7 +69,7 @@ app.get('/players/:playerTag/battlelog', async (req, res) => {
 app.get('/tournaments', async (req, res) => {
   try {
       const { name, limit, after, before } = req.query;
-      let url = `${BASE_URL}/tournaments`;
+      let url = `https://api.clashroyale.com/v1/tournaments`;
 
       // Build query parameters
       const queryParams = [];
@@ -93,7 +93,7 @@ app.get('/tournaments', async (req, res) => {
 app.get('/tournaments/:tournamentTag', async (req, res) => {
   try {
       const tournamentTag = req.params.tournamentTag.replace('#', '%23'); 
-      const url = `${BASE_URL}/tournaments/${tournamentTag}`;
+      const url = `https://api.clashroyale.com/v1/tournaments/${tournamentTag}`;
       const tournamentInfo = await makeApiRequest(url);
       res.json(tournamentInfo);
   } catch (error) {
@@ -117,7 +117,7 @@ app.get("/", (req, res) => {
 
 async function getPlayerProfile(playerTag) {
   try {
-      const response = await axios.get(`${BASE_URL}/players/%23${playerTag.replace('#', '')}`, {
+      const response = await axios.get(`${ClASHROYALE_BASE_URL}/players/%23${playerTag.replace('#', '')}`, {
           headers: {
               Authorization: `Bearer ${API_KEY}`,
           },
